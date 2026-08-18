@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Invitation</title>
+    <style>
+        /* --- Global Styles --- */
+        body {
+            background-color: #fdf5f6;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: #333;
+        }
+
+        h1 {
+            color: #d6336c;
+            font-family: 'Georgia', serif;
+            margin-bottom: 5px;
+        }
+
+        .subtext {
+            color: #888;
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .icon-placeholder {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        /* --- Screen Layout --- */
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .screen.active {
+            display: flex;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- Buttons --- */
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        #yesBtn {
+            background-color: #ffb3c6;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #c8b6ff;
+            color: white;
+            z-index: 10;
+        }
+
+        .next-btn {
+            background-color: #ffb3c6;
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        /* --- Forms & Grid --- */
+        .form-group {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: inherit;
+            background-color: white;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .grid-item {
+            background-color: white;
+            color: #333;
+            padding: 15px;
+            font-size: 16px;
+        }
+
+        #successMsg {
+            display: none;
+            color: #d6336c;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Screen 1: The Ask -->
+    <div id="screen1" class="screen active">
+        <div class="icon-placeholder">🐶</div>
+        <h1>Will you go on a date with me? 🌸</h1>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="showScreen('screen2')">YES ♥</button>
+            <button id="noBtn" onmouseover="moveButton()">no ✖</button>
+        </div>
+    </div>
+
+    <!-- Screen 2: The Shock -->
+    <div id="screen2" class="screen">
+        <div class="icon-placeholder">🧽</div>
+        <h1>WAIT YOU ACTUALLY SAID YES??</h1>
+        <p class="subtext">I was so ready for you to say no 😂</p>
+        <button class="next-btn" onclick="showScreen('screen3')">okay okay! &rarr;</button>
+    </div>
+
+    <!-- Screen 3: The Logistics -->
+    <div id="screen3" class="screen">
+        <div class="icon-placeholder">📅🐾</div>
+        <h1>So... when are you free?</h1>
+        
+        <div class="form-group">
+            <label>Pick a Day</label>
+            <input type="date" id="dateChoice">
+        </div>
+        
+        <div class="form-group">
+            <label>What Time?</label>
+            <select id="timeChoice">
+                <option value="Not selected" disabled selected>Select a time...</option>
+                <option value="6:00 PM">6:00 PM</option>
+                <option value="6:30 PM">6:30 PM</option>
+                <option value="7:00 PM">7:00 PM</option>
+                <option value="7:30 PM">7:30 PM</option>
+                <option value="8:00 PM">8:00 PM</option>
+            </select>
+        </div>
+
+        <button class="next-btn" onclick="showScreen('screen4')">set the date! ♥</button>
+    </div>
+
+    <!-- Screen 4: The Vibe -->
+    <div id="screen4" class="screen">
+        <h1>What are we feeling? ✨🍽️✨</h1>
+        <p class="subtext">pick your vibe</p>
+        
+        <div class="grid-container">
+            <button class="grid-item" onclick="setVibe('Pizza')">🍕<br>Pizza</button>
+            <button class="grid-item" onclick="setVibe('Sushi')">🍣<br>Sushi</button>
+            <button class="grid-item" onclick="setVibe('Burgers')">🍔<br>Burgers</button>
+            <button class="grid-item" onclick="setVibe('Pasta')">🍝<br>Pasta</button>
+            <button class="grid-item" onclick="setVibe('Tacos')">🌮<br>Tacos</button>
+            <button class="grid-item" onclick="setVibe('Ramen')">🍜<br>Ramen</button>
+        </div>
+    </div>
+
+    <!-- Screen 5: The Final Confirmation -->
+    <div id="screen5" class="screen">
+        <div class="icon-placeholder">💌</div>
+        <h1>You love me 💖</h1>
+        <p class="subtext">be ready by 6, I'm coming to get you 🚗</p>
+        <button id="finalConfirmBtn" class="next-btn" onclick="sendConfirmationEmail()">Confirm 💅</button>
+        <div id="successMsg">See you then! 🥰</div>
+    </div>
+
+    <script>
+        let chosenVibe = "Not selected";
+
+        function showScreen(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function moveButton() {
+            const button = document.getElementById('noBtn');
+            button.style.position = 'fixed';
+            
+            const maxX = window.innerWidth - button.clientWidth - 20;
+            const maxY = window.innerHeight - button.clientHeight - 20;
+            
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+            
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+        }
+
+        function setVibe(vibe) {
+            chosenVibe = vibe;
+            showScreen('screen5');
+        }
+
+        function sendConfirmationEmail() {
+            const btn = document.getElementById('finalConfirmBtn');
+            const successMsg = document.getElementById('successMsg');
+            const dateStr = document.getElementById('dateChoice').value || "No date picked";
+            const timeStr = document.getElementById('timeChoice').value || "No time picked";
+            
+            btn.innerText = "Confirming... ⏳";
+            btn.disabled = true;
+
+            // Send silent POST request to FormSubmit API
+            fetch("https://formsubmit.co/ajax/vedantvinchurkar2@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: "New Date Accepted! 💖",
+                    Message: "They accepted your love and the date invitation!",
+                    Date_Chosen: dateStr,
+                    Time_Chosen: timeStr,
+                    Food_Vibe: chosenVibe
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.style.display = 'none';
+                successMsg.style.display = 'block';
+                alert("Confirmed! See you then 🥰");
+            })
+            .catch(error => {
+                // If it fails (ad blockers, etc.), still act like it worked for the user
+                btn.style.display = 'none';
+                successMsg.style.display = 'block';
+                alert("Confirmed! See you then 🥰");
+                console.log("Email failed to send, but UI proceeded.");
+            });
+        }
+    </script>
+</body>
+</html>
